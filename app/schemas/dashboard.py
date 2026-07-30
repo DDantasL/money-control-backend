@@ -4,6 +4,8 @@ from enum import Enum
 
 from pydantic import BaseModel, Field
 
+from app.schemas.payment_checklist import PaymentChecklistStatus
+
 
 class LimitAlertLevel(str, Enum):
     OK = "ok"
@@ -88,3 +90,4 @@ class MonthlyDashboard(BaseModel):
     limit_progress: list[LimitProgress]
     member_balances: list[MemberBalance]
     transfer_suggestions: list[TransferSuggestion]
+    payment_checklist: PaymentChecklistStatus

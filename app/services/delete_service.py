@@ -15,6 +15,10 @@ from app.models import (
     TransactionSplit,
     User,
 )
+from app.services.payment_checklist_service import (
+    delete_checklist_for_card,
+    delete_checklist_for_transactions,
+)
 
 
 def _delete_transaction_splits(session: Session, transaction_ids: list[int]) -> None:
@@ -32,6 +36,7 @@ def _delete_transactions(session: Session, transactions: list[Transaction]) -> N
         return
 
     transaction_ids = [tx.id for tx in transactions if tx.id is not None]
+    delete_checklist_for_transactions(session, transaction_ids)
     _delete_transaction_splits(session, transaction_ids)
 
     children = [tx for tx in transactions if tx.parent_transaction_id is not None]
@@ -220,7 +225,9 @@ def delete_user(session: Session, user_id: int) -> None:
             )
 
     for card in cards:
-        delete_card_transactions(session, card.id)
+        if card.id is not None:
+            delete_checklist_for_card(session, card.id)
+            delete_card_transactions(session, card.id)
         session.delete(card)
 
     budgets = list(

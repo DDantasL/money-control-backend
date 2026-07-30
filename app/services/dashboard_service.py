@@ -15,10 +15,9 @@ from app.schemas.dashboard import (
     TransactionSplitDetail,
     TransferSuggestion,
 )
-from app.services.transaction_service import get_transactions_for_month
-
-
+from app.services.payment_checklist_service import get_checklist_status
 from app.services.recurring_contribution_service import ensure_recurring_contributions_for_month
+from app.services.transaction_service import get_transactions_for_month
 
 
 def _alert_level(spent: Decimal, limit_value: Decimal) -> LimitAlertLevel:
@@ -284,6 +283,7 @@ def build_monthly_dashboard(session: Session, month_year: str) -> MonthlyDashboa
     )
     family_pool_balance = total_contributions - family_pool_spent
     personal_card_spent = total_spent - family_pool_spent
+    payment_checklist = get_checklist_status(session, month_year)
 
     return MonthlyDashboard(
         month_year=month_year,
@@ -298,4 +298,5 @@ def build_monthly_dashboard(session: Session, month_year: str) -> MonthlyDashboa
         limit_progress=limit_progress,
         member_balances=member_balances,
         transfer_suggestions=transfer_suggestions,
+        payment_checklist=payment_checklist,
     )

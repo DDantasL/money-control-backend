@@ -1,6 +1,7 @@
 from app.models.account import Account
 from app.models.monthly_budget import MonthlyBudget
 from app.models.payment_card import PaymentCard
+from app.models.payment_checklist import PaymentChecklistItem
 from app.models.recurring_contribution import RecurringContribution
 from app.models.recurring_payment import RecurringPayment
 from app.models.recurring_payment_skip import RecurringPaymentSkip
@@ -13,6 +14,7 @@ __all__ = [
     "Account",
     "User",
     "PaymentCard",
+    "PaymentChecklistItem",
     "MonthlyBudget",
     "RecurringContribution",
     "Transaction",
