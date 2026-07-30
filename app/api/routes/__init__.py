@@ -5,6 +5,7 @@ from app.api.routes import (
     auth,
     budgets,
     cards,
+    contribution_extras,
     dashboard,
     payment_checklist,
     recurring_contributions,
@@ -22,6 +23,7 @@ protected_router.include_router(users.router)
 protected_router.include_router(cards.router)
 protected_router.include_router(transactions.router)
 protected_router.include_router(budgets.router)
+protected_router.include_router(contribution_extras.router)
 protected_router.include_router(spending_limits.router)
 protected_router.include_router(recurring_payments.router)
 protected_router.include_router(recurring_contributions.router)

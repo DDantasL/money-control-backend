@@ -15,6 +15,7 @@ from app.schemas.dashboard import (
     TransactionSplitDetail,
     TransferSuggestion,
 )
+from app.services.contribution_extra_service import extras_total_by_user
 from app.services.payment_checklist_service import get_checklist_status
 from app.services.recurring_contribution_service import ensure_recurring_contributions_for_month
 from app.services.transaction_service import get_transactions_for_month
@@ -239,6 +240,7 @@ def build_monthly_dashboard(session: Session, month_year: str) -> MonthlyDashboa
         session.exec(select(MonthlyBudget).where(MonthlyBudget.month_year == month_year)).all()
     )
     budget_by_user = {budget.user_id: budget for budget in budgets}
+    extras_by_user = extras_total_by_user(session, month_year)
 
     member_balances: list[MemberBalance] = []
     total_contributions = Decimal("0.00")
@@ -252,6 +254,9 @@ def build_monthly_dashboard(session: Session, month_year: str) -> MonthlyDashboa
             and budget.expected_contribution > Decimal("0.00")
         ):
             actual = budget.expected_contribution
+        actual = (actual + extras_by_user.get(user.id, Decimal("0.00"))).quantize(
+            Decimal("0.01")
+        )
 
         if user.is_family:
             total_contributions += actual

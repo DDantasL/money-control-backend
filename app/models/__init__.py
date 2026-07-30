@@ -1,4 +1,5 @@
 from app.models.account import Account
+from app.models.contribution_extra import ContributionExtra
 from app.models.monthly_budget import MonthlyBudget
 from app.models.payment_card import PaymentCard
 from app.models.payment_checklist import PaymentChecklistItem
@@ -15,6 +16,7 @@ __all__ = [
     "User",
     "PaymentCard",
     "PaymentChecklistItem",
+    "ContributionExtra",
     "MonthlyBudget",
     "RecurringContribution",
     "Transaction",

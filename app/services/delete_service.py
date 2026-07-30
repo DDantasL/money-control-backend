@@ -15,6 +15,10 @@ from app.models import (
     TransactionSplit,
     User,
 )
+from app.services.contribution_extra_service import (
+    delete_extras_for_user,
+    delete_extras_for_user_month,
+)
 from app.services.payment_checklist_service import (
     delete_checklist_for_card,
     delete_checklist_for_transactions,
@@ -233,6 +237,7 @@ def delete_user(session: Session, user_id: int) -> None:
     budgets = list(
         session.exec(select(MonthlyBudget).where(MonthlyBudget.user_id == user_id)).all()
     )
+    delete_extras_for_user(session, user_id)
     for budget in budgets:
         session.delete(budget)
 
@@ -259,6 +264,7 @@ def delete_budget(session: Session, budget_id: int) -> None:
     if not budget:
         raise HTTPException(status_code=404, detail="Contribuição não encontrada")
 
+    delete_extras_for_user_month(session, budget.user_id, budget.month_year)
     session.delete(budget)
     session.commit()
 

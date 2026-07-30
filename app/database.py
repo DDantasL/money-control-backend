@@ -11,6 +11,7 @@ from app.services.auth_service import ensure_initial_admin
 from app.services.family_service import ensure_family_account
 from app.models import (
     Account,
+    ContributionExtra,
     MonthlyBudget,
     PaymentCard,
     PaymentChecklistItem,
@@ -28,6 +29,7 @@ from app.models import (
 _models_for_metadata_registration = (
     Account,
     MonthlyBudget,
+    ContributionExtra,
     PaymentCard,
     PaymentChecklistItem,
     RecurringContribution,
